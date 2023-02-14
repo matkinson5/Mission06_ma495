@@ -12,13 +12,22 @@ namespace Mission06_ma495.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private MovieSubmissionsContext theContext { get; set; }
+            
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MovieSubmissionsContext Submission)
         {
             _logger = logger;
+            theContext = Submission;
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult MyPodcasts()
         {
             return View();
         }
@@ -32,6 +41,9 @@ namespace Mission06_ma495.Controllers
         [HttpPost]
         public IActionResult MovieApplication(ApplicationResponse ar)
         {
+            theContext.Add(ar);
+            theContext.SaveChanges();
+
             return View("Confirmation",ar);
         }
 

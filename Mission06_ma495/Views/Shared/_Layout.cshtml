@@ -9,6 +9,11 @@
 </head>
 <body>
     <div>
+        <nav>
+            <a asp-controller="Home" asp-action="Index">Home | </a> 
+            <a asp-controller="Home" asp-action="MovieApplication">Submit a Movie | </a>
+            <a asp-controller="Home" asp-action="MyPodcasts">Listen to my Podcast</a>
+        </nav>
         @RenderBody()
     </div>
 </body>

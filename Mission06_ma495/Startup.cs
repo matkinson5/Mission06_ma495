@@ -27,7 +27,10 @@ namespace Mission06_ma495
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<MovieApplicationContext>
+            services.AddDbContext<MovieSubmissionsContext>(options =>
+           {
+               options.UseSqlite(Configuration["ConnectionStrings:TheConnection"]);
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
