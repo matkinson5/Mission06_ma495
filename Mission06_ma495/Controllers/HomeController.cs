@@ -29,7 +29,8 @@ namespace Mission06_ma495.Controllers
         [HttpGet]
         public IActionResult MyPodcasts()
         {
-            return View();
+                return View();
+           
         }
 
         [HttpGet]
@@ -41,10 +42,16 @@ namespace Mission06_ma495.Controllers
         [HttpPost]
         public IActionResult MovieApplication(ApplicationResponse ar)
         {
-            theContext.Add(ar);
-            theContext.SaveChanges();
-
-            return View("Confirmation",ar);
+            if (ModelState.IsValid)
+            {
+                theContext.Add(ar);
+                theContext.SaveChanges();
+                return View("Confirmation", ar);
+            }
+            else
+            {
+                return View(ar);
+            }
         }
 
         public IActionResult Privacy()
