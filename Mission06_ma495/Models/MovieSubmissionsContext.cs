@@ -14,15 +14,22 @@ namespace Mission06_ma495.Models
         }
 
         public DbSet<ApplicationResponse> responses { get; set; }
+        public DbSet<Category>Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category { CategoryID=1, CategoryName="Family"},
+                new Category { CategoryID=2, CategoryName="Action"},
+                new Category { CategoryID=3, CategoryName="Science Fiction"},
+                new Category { CategoryID=4, CategoryName="Comedy"}
+                );
             mb.Entity<ApplicationResponse>().HasData(
                 
                 new ApplicationResponse
                 {
                     MovieId = 1,
-                    Category = "Family",
+                    CategoryID = 2,
                     Title = "The Princess Bride",
                     Year = "1987",
                     Director = "Inigo Montoya",
@@ -34,7 +41,7 @@ namespace Mission06_ma495.Models
                 new ApplicationResponse
                 {
                     MovieId = 2,
-                    Category = "Family",
+                    CategoryID = 1,
                     Title = "The Guernsey Literary and Potato Peel Pie Society",
                     Year = "2018",
                     Director = "Mike Newell",
@@ -46,7 +53,7 @@ namespace Mission06_ma495.Models
                 new ApplicationResponse
                 {
                     MovieId = 3,
-                    Category = "Schi-fi/Adventure",
+                    CategoryID = 1,
                     Title = "Dune",
                     Year = "2021",
                     Director = "Denis Villeneuve",

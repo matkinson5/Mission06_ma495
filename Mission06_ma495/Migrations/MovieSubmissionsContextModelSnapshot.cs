@@ -22,9 +22,8 @@ namespace Mission06_ma495.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -54,13 +53,15 @@ namespace Mission06_ma495.Migrations
 
                     b.HasKey("MovieId");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("responses");
 
                     b.HasData(
                         new
                         {
                             MovieId = 1,
-                            Category = "Family",
+                            CategoryID = 2,
                             Director = "Inigo Montoya",
                             Edited = false,
                             LentTo = "Mom",
@@ -72,7 +73,7 @@ namespace Mission06_ma495.Migrations
                         new
                         {
                             MovieId = 2,
-                            Category = "Family",
+                            CategoryID = 1,
                             Director = "Mike Newell",
                             Edited = false,
                             LentTo = "Julia",
@@ -84,7 +85,7 @@ namespace Mission06_ma495.Migrations
                         new
                         {
                             MovieId = 3,
-                            Category = "Schi-fi/Adventure",
+                            CategoryID = 1,
                             Director = "Denis Villeneuve",
                             Edited = true,
                             LentTo = "",
@@ -93,6 +94,51 @@ namespace Mission06_ma495.Migrations
                             Title = "Dune",
                             Year = "2021"
                         });
+                });
+
+            modelBuilder.Entity("Mission06_ma495.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Action"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Science Fiction"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Comedy"
+                        });
+                });
+
+            modelBuilder.Entity("Mission06_ma495.Models.ApplicationResponse", b =>
+                {
+                    b.HasOne("Mission06_ma495.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

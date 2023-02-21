@@ -13,7 +13,8 @@ namespace Mission06_ma495.Models
         public int MovieId { get; set; }
 
         [Required]
-        public string Category { get; set; }
+        public int CategoryID { get; set; }
+        public Category Category { get; set; } //foreign key relationship
 
         [Required]
         public string Title { get; set; }

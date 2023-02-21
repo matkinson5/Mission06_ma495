@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mission06_ma495.Models;
 using System;
@@ -36,11 +37,12 @@ namespace Mission06_ma495.Controllers
         [HttpGet]
         public IActionResult MovieApplication()
         {
-            return View();
+            ViewBag.Categories= MovieContext.Categories.ToList();
+            return View("MovieApplication", new ApplicationResponse());
         }
 
         [HttpPost]
-        public IActionResult MovieApplication(ApplicationResponse ar)
+        public IActionResult MovieApplication(ApplicationResponse ar) //send in a movie to add 
         {
             if (ModelState.IsValid)
             {
@@ -50,16 +52,59 @@ namespace Mission06_ma495.Controllers
             }
             else
             {
+                ViewBag.Categories = MovieContext.Categories.ToList();
                 return View(ar);
             }
         }
 
         [HttpGet]
 
-        public IActionResult MovieList()
+        public IActionResult MovieList() //show the list of moview
         {
-            var movies = MovieContext.responses.ToList();
+            var movies = MovieContext.responses
+                .Include(x => x.Category)
+                .ToList();
             return View(movies);
+        }
+
+        [HttpGet]
+        public IActionResult Edit (int id)
+        {
+            ViewBag.Categories = MovieContext.Categories.ToList();
+
+            var application = MovieContext.responses.Single(x => x.MovieId == id);
+
+            return View("MovieApplication", application);
+        }
+
+        [HttpPost] //save the edits made to a given movie
+
+        public IActionResult Edit (ApplicationResponse app)
+        {
+            MovieContext.Update(app);
+            MovieContext.SaveChanges();
+
+            return RedirectToAction("MovieList");
+        }
+
+        [HttpGet]
+
+        public IActionResult Delete (int id)
+        {
+            ViewBag.Categories = MovieContext.Categories.ToList();
+
+            var movie = MovieContext.responses.Single(x => x.MovieId == id);
+            return View(movie);
+        }
+
+        [HttpPost] //delete the movie and send the user back to the list of moview
+
+        public IActionResult Delete (ApplicationResponse ar)
+        {
+            MovieContext.responses.Remove(ar);
+            MovieContext.SaveChanges();
+
+            return RedirectToAction("MovieList");
         }
 
     }
