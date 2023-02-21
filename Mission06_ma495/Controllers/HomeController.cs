@@ -11,14 +11,14 @@ namespace Mission06_ma495.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private MovieSubmissionsContext theContext { get; set; }
+
+        private MovieSubmissionsContext MovieContext { get; set; }
             
 
-        public HomeController(ILogger<HomeController> logger, MovieSubmissionsContext Submission)
+        public HomeController( MovieSubmissionsContext Submission)
         {
-            _logger = logger;
-            theContext = Submission;
+
+            MovieContext = Submission;
         }
 
         public IActionResult Index()
@@ -44,8 +44,8 @@ namespace Mission06_ma495.Controllers
         {
             if (ModelState.IsValid)
             {
-                theContext.Add(ar);
-                theContext.SaveChanges();
+                MovieContext.Add(ar);
+                MovieContext.SaveChanges();
                 return View("Confirmation", ar);
             }
             else
@@ -54,15 +54,13 @@ namespace Mission06_ma495.Controllers
             }
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+
+        public IActionResult MovieList()
         {
-            return View();
+            var movies = MovieContext.responses.ToList();
+            return View(movies);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
